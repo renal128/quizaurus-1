@@ -2382,9 +2382,9 @@ var require_react_dom_development = __commonJS({
         if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== "undefined" && typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart === "function") {
           __REACT_DEVTOOLS_GLOBAL_HOOK__.registerInternalModuleStart(new Error());
         }
-        var React3 = require_react();
+        var React5 = require_react();
         var Scheduler = require_scheduler();
-        var ReactSharedInternals = React3.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+        var ReactSharedInternals = React5.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
         var suppressWarning = false;
         function setSuppressWarning(newSuppressWarning) {
           {
@@ -3991,7 +3991,7 @@ var require_react_dom_development = __commonJS({
           {
             if (props.value == null) {
               if (typeof props.children === "object" && props.children !== null) {
-                React3.Children.forEach(props.children, function(child) {
+                React5.Children.forEach(props.children, function(child) {
                   if (child == null) {
                     return;
                   }
@@ -4487,15 +4487,15 @@ var require_react_dom_development = __commonJS({
           };
         }
         var warnValidStyle$1 = warnValidStyle;
-        function createDangerousStringForStyles(styles2) {
+        function createDangerousStringForStyles(styles3) {
           {
             var serialized = "";
             var delimiter = "";
-            for (var styleName in styles2) {
-              if (!styles2.hasOwnProperty(styleName)) {
+            for (var styleName in styles3) {
+              if (!styles3.hasOwnProperty(styleName)) {
                 continue;
               }
-              var styleValue = styles2[styleName];
+              var styleValue = styles3[styleName];
               if (styleValue != null) {
                 var isCustomProperty = styleName.indexOf("--") === 0;
                 serialized += delimiter + (isCustomProperty ? styleName : hyphenateStyleName(styleName)) + ":";
@@ -4506,19 +4506,19 @@ var require_react_dom_development = __commonJS({
             return serialized || null;
           }
         }
-        function setValueForStyles(node, styles2) {
+        function setValueForStyles(node, styles3) {
           var style2 = node.style;
-          for (var styleName in styles2) {
-            if (!styles2.hasOwnProperty(styleName)) {
+          for (var styleName in styles3) {
+            if (!styles3.hasOwnProperty(styleName)) {
               continue;
             }
             var isCustomProperty = styleName.indexOf("--") === 0;
             {
               if (!isCustomProperty) {
-                warnValidStyle$1(styleName, styles2[styleName]);
+                warnValidStyle$1(styleName, styles3[styleName]);
               }
             }
-            var styleValue = dangerousStyleValue(styleName, styles2[styleName], isCustomProperty);
+            var styleValue = dangerousStyleValue(styleName, styles3[styleName], isCustomProperty);
             if (styleName === "float") {
               styleName = "cssFloat";
             }
@@ -4532,9 +4532,9 @@ var require_react_dom_development = __commonJS({
         function isValueEmpty(value) {
           return value == null || typeof value === "boolean" || value === "";
         }
-        function expandShorthandMap(styles2) {
+        function expandShorthandMap(styles3) {
           var expanded = {};
-          for (var key in styles2) {
+          for (var key in styles3) {
             var longhands = shorthandToLonghand[key] || [key];
             for (var i = 0; i < longhands.length; i++) {
               expanded[longhands[i]] = key;
@@ -23583,9 +23583,6 @@ var require_client = __commonJS({
 // src/wrapper_chat.tsx
 var import_client = __toESM(require_client());
 
-// src/component.tsx
-var import_react2 = __toESM(require_react());
-
 // src/hooks.ts
 var import_react = __toESM(require_react());
 
@@ -23617,55 +23614,23 @@ function useToolOutput() {
   return useOpenAiGlobal("toolOutput");
 }
 
-// src/component.tsx
-function App() {
-  const toolOutput = useToolOutput();
-  const [currentQuestionIndex, setCurrentQuestionIndex] = (0, import_react2.useState)(0);
-  const [selectedAnswerIndex, setSelectedAnswerIndex] = (0, import_react2.useState)(null);
-  const [quizState, setQuizState] = (0, import_react2.useState)("question");
-  const [userAnswers, setUserAnswers] = (0, import_react2.useState)([]);
-  if (!toolOutput) {
-    return /* @__PURE__ */ import_react2.default.createElement("div", null, "Loading...");
-  }
-  const currentQuestion = toolOutput.questions[currentQuestionIndex];
-  const isLastQuestion = currentQuestionIndex === toolOutput.questions.length - 1;
-  const correctAnswersCount = userAnswers.filter(
-    (answer, idx) => answer === toolOutput.questions[idx].correctIndex
-  ).length;
-  const totalQuestions = toolOutput.questions.length;
-  const mistakesCount = userAnswers.length - correctAnswersCount;
-  const handleSelectAnswer = (index) => {
-    if (quizState === "question") {
-      setSelectedAnswerIndex(index);
-    }
-  };
-  const handleSubmitAnswer = () => {
-    if (selectedAnswerIndex !== null) {
-      setUserAnswers([...userAnswers, selectedAnswerIndex]);
-      setQuizState("feedback");
-    }
-  };
-  const handleNextQuestion = () => {
-    if (isLastQuestion) {
-      setQuizState("results");
-    } else {
-      setSelectedAnswerIndex(null);
-      setQuizState("question");
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
-  };
-  const handleStartOver = () => {
-    setCurrentQuestionIndex(0);
-    setSelectedAnswerIndex(null);
-    setQuizState("question");
-    setUserAnswers([]);
-  };
-  if (quizState === "results") {
-    const scorePercentage = Math.round(correctAnswersCount / totalQuestions * 100);
-    return /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.container }, /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.card }, /* @__PURE__ */ import_react2.default.createElement("h1", { style: styles.title }, "Quiz Complete!"), /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.topicBadge }, toolOutput.topic, " - ", toolOutput.difficulty), /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.resultsContainer }, /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.scoreCircle }, /* @__PURE__ */ import_react2.default.createElement("span", { style: styles.scorePercentage }, scorePercentage, "%")), /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.resultsStats }, /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.statItem }, /* @__PURE__ */ import_react2.default.createElement("span", { style: styles.statLabel }, "Correct Answers:"), /* @__PURE__ */ import_react2.default.createElement("span", { style: styles.statValue }, correctAnswersCount, " out of ", totalQuestions)), /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.statItem }, /* @__PURE__ */ import_react2.default.createElement("span", { style: styles.statLabel }, "Mistakes:"), /* @__PURE__ */ import_react2.default.createElement("span", { style: styles.statValue }, mistakesCount)))), /* @__PURE__ */ import_react2.default.createElement("button", { style: styles.primaryButton, onClick: handleStartOver }, "Start Over")));
-  }
+// src/QuestionScreen.tsx
+var import_react2 = __toESM(require_react());
+function QuestionScreen({
+  topic,
+  difficulty,
+  currentQuestion,
+  currentQuestionIndex,
+  totalQuestions,
+  quizState,
+  selectedAnswerIndex,
+  isLastQuestion,
+  onSelectAnswer,
+  onSubmitAnswer,
+  onNextQuestion
+}) {
   const isCorrect = selectedAnswerIndex === currentQuestion.correctIndex;
-  return /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.container }, /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.card }, /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.header }, /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.topicBadge }, toolOutput.topic, " - ", toolOutput.difficulty), /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.questionCounter }, "Question ", currentQuestionIndex + 1, " of ", totalQuestions)), /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.progressBar }, /* @__PURE__ */ import_react2.default.createElement(
+  return /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.container }, /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.card }, /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.header }, /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.topicBadge }, topic, " - ", difficulty), /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.questionCounter }, "Question ", currentQuestionIndex + 1, " of ", totalQuestions)), /* @__PURE__ */ import_react2.default.createElement("div", { style: styles.progressBar }, /* @__PURE__ */ import_react2.default.createElement(
     "div",
     {
       style: {
@@ -23689,7 +23654,7 @@ function App() {
       {
         key: index,
         style: optionStyle,
-        onClick: () => handleSelectAnswer(index),
+        onClick: () => onSelectAnswer(index),
         disabled: quizState === "feedback"
       },
       /* @__PURE__ */ import_react2.default.createElement("span", { style: styles.optionLetter }, String.fromCharCode(65 + index)),
@@ -23703,11 +23668,11 @@ function App() {
     "button",
     {
       style: selectedAnswerIndex === null ? styles.disabledButton : styles.primaryButton,
-      onClick: handleSubmitAnswer,
+      onClick: onSubmitAnswer,
       disabled: selectedAnswerIndex === null
     },
     "Submit Answer"
-  ) : /* @__PURE__ */ import_react2.default.createElement("button", { style: styles.primaryButton, onClick: handleNextQuestion }, isLastQuestion ? "See Results" : "Next Question")));
+  ) : /* @__PURE__ */ import_react2.default.createElement("button", { style: styles.primaryButton, onClick: onNextQuestion }, isLastQuestion ? "See Results" : "Next Question")));
 }
 var styles = {
   container: {
@@ -23859,6 +23824,43 @@ var styles = {
     fontWeight: 600,
     cursor: "not-allowed",
     marginTop: "auto"
+  }
+};
+
+// src/ResultsScreen.tsx
+var import_react3 = __toESM(require_react());
+function ResultsScreen({ topic, difficulty, correctAnswersCount, totalQuestions, mistakesCount, onStartOver }) {
+  const scorePercentage = Math.round(correctAnswersCount / totalQuestions * 100);
+  return /* @__PURE__ */ import_react3.default.createElement("div", { style: styles2.container }, /* @__PURE__ */ import_react3.default.createElement("div", { style: styles2.card }, /* @__PURE__ */ import_react3.default.createElement("h1", { style: styles2.title }, "Quiz Complete!"), /* @__PURE__ */ import_react3.default.createElement("div", { style: styles2.topicBadge }, topic, " - ", difficulty), /* @__PURE__ */ import_react3.default.createElement("div", { style: styles2.resultsContainer }, /* @__PURE__ */ import_react3.default.createElement("div", { style: styles2.scoreCircle }, /* @__PURE__ */ import_react3.default.createElement("span", { style: styles2.scorePercentage }, scorePercentage, "%")), /* @__PURE__ */ import_react3.default.createElement("div", { style: styles2.resultsStats }, /* @__PURE__ */ import_react3.default.createElement("div", { style: styles2.statItem }, /* @__PURE__ */ import_react3.default.createElement("span", { style: styles2.statLabel }, "Correct Answers:"), /* @__PURE__ */ import_react3.default.createElement("span", { style: styles2.statValue }, correctAnswersCount, " out of ", totalQuestions)), /* @__PURE__ */ import_react3.default.createElement("div", { style: styles2.statItem }, /* @__PURE__ */ import_react3.default.createElement("span", { style: styles2.statLabel }, "Mistakes:"), /* @__PURE__ */ import_react3.default.createElement("span", { style: styles2.statValue }, mistakesCount)))), /* @__PURE__ */ import_react3.default.createElement("button", { style: styles2.primaryButton, onClick: onStartOver }, "Start Over")));
+}
+var styles2 = {
+  container: {
+    backgroundColor: "#f5f5f5",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "20px",
+    fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif"
+  },
+  card: {
+    backgroundColor: "white",
+    borderRadius: "12px",
+    padding: "24px",
+    maxWidth: "650px",
+    width: "100%",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    minHeight: "500px",
+    display: "flex",
+    flexDirection: "column"
+  },
+  topicBadge: {
+    backgroundColor: "#e3f2fd",
+    color: "#1976d2",
+    padding: "6px 12px",
+    borderRadius: "16px",
+    fontSize: "13px",
+    fontWeight: 600,
+    textTransform: "capitalize"
   },
   title: {
     fontSize: "32px",
@@ -23910,13 +23912,101 @@ var styles = {
     fontWeight: 700,
     color: "#333",
     fontSize: "18px"
+  },
+  primaryButton: {
+    width: "100%",
+    padding: "12px",
+    backgroundColor: "#1976d2",
+    color: "white",
+    border: "none",
+    borderRadius: "8px",
+    fontSize: "15px",
+    fontWeight: 600,
+    cursor: "pointer",
+    transition: "background-color 0.2s ease",
+    marginTop: "auto"
   }
 };
+
+// src/component.tsx
+var import_react4 = __toESM(require_react());
+function App() {
+  const toolOutput = useToolOutput();
+  const [currentQuestionIndex, setCurrentQuestionIndex] = (0, import_react4.useState)(0);
+  const [selectedAnswerIndex, setSelectedAnswerIndex] = (0, import_react4.useState)(null);
+  const [quizState, setQuizState] = (0, import_react4.useState)("question");
+  const [userAnswers, setUserAnswers] = (0, import_react4.useState)([]);
+  if (!toolOutput) {
+    return /* @__PURE__ */ import_react4.default.createElement("div", null, "Loading...");
+  }
+  const currentQuestion = toolOutput.questions[currentQuestionIndex];
+  const isLastQuestion = currentQuestionIndex === toolOutput.questions.length - 1;
+  const correctAnswersCount = userAnswers.filter(
+    (answer, idx) => answer === toolOutput.questions[idx].correctIndex
+  ).length;
+  const totalQuestions = toolOutput.questions.length;
+  const mistakesCount = userAnswers.length - correctAnswersCount;
+  const handleSelectAnswer = (index) => {
+    if (quizState === "question") {
+      setSelectedAnswerIndex(index);
+    }
+  };
+  const handleSubmitAnswer = () => {
+    if (selectedAnswerIndex !== null) {
+      setUserAnswers([...userAnswers, selectedAnswerIndex]);
+      setQuizState("feedback");
+    }
+  };
+  const handleNextQuestion = () => {
+    if (isLastQuestion) {
+      setQuizState("results");
+    } else {
+      setSelectedAnswerIndex(null);
+      setQuizState("question");
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
+  };
+  const handleStartOver = () => {
+    setCurrentQuestionIndex(0);
+    setSelectedAnswerIndex(null);
+    setQuizState("question");
+    setUserAnswers([]);
+  };
+  if (quizState === "results") {
+    return /* @__PURE__ */ import_react4.default.createElement(
+      ResultsScreen,
+      {
+        topic: toolOutput.topic,
+        difficulty: toolOutput.difficulty,
+        correctAnswersCount,
+        totalQuestions,
+        mistakesCount,
+        onStartOver: handleStartOver
+      }
+    );
+  }
+  return /* @__PURE__ */ import_react4.default.createElement(
+    QuestionScreen,
+    {
+      topic: toolOutput.topic,
+      difficulty: toolOutput.difficulty,
+      currentQuestion,
+      currentQuestionIndex,
+      totalQuestions,
+      quizState,
+      selectedAnswerIndex,
+      isLastQuestion,
+      onSelectAnswer: handleSelectAnswer,
+      onSubmitAnswer: handleSubmitAnswer,
+      onNextQuestion: handleNextQuestion
+    }
+  );
+}
 var component_default = App;
 
 // src/wrapper_chat.tsx
-var import_react3 = __toESM(require_react());
-(0, import_client.createRoot)(document.getElementById("quizaurus-root")).render(/* @__PURE__ */ import_react3.default.createElement(component_default, null));
+var import_react5 = __toESM(require_react());
+(0, import_client.createRoot)(document.getElementById("quizaurus-root")).render(/* @__PURE__ */ import_react5.default.createElement(component_default, null));
 var wrapper_chat_default = component_default;
 export {
   wrapper_chat_default as default
