@@ -1,7 +1,8 @@
-import { useToolOutput } from "./hooks";
-import { QuestionScreen, QuizState } from "./QuestionScreen";
-import { ResultsScreen } from "./ResultsScreen";
 import React, { useState } from "react";
+import { createRoot } from "react-dom/client";
+import { useToolOutput } from "./openAiHooks";
+import { QuestionScreen } from "./QuestionScreen";
+import { ResultsScreen } from "./ResultsScreen";
 
 export interface Question {
     question: string;
@@ -10,7 +11,8 @@ export interface Question {
     explanation: string;
 }
 
-// Type definitions
+export type QuizState = "question" | "feedback" | "results";
+
 interface QuizData {
     topic: string;
     difficulty: string;
@@ -20,7 +22,6 @@ interface QuizData {
 function App() {
     const toolOutput = useToolOutput() as QuizData | null;
 
-    // State management
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number | null>(null);
     const [quizState, setQuizState] = useState<QuizState>("question");
@@ -30,15 +31,15 @@ function App() {
         return <div>Loading...</div>;
     }
 
-    const currentQuestion = toolOutput.questions[currentQuestionIndex];
-    const isLastQuestion = currentQuestionIndex === toolOutput.questions.length - 1;
+    const { questions, topic, difficulty } = toolOutput;
+    const currentQuestion = questions[currentQuestionIndex];
+    const totalQuestions = questions.length;
+    const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
     const correctAnswersCount = userAnswers.filter(
-        (answer, idx) => answer === toolOutput.questions[idx].correctIndex
+        (answer, idx) => answer === questions[idx].correctIndex
     ).length;
-    const totalQuestions = toolOutput.questions.length;
     const mistakesCount = userAnswers.length - correctAnswersCount;
 
-    // Event handlers
     const handleSelectAnswer = (index: number) => {
         if (quizState === "question") {
             setSelectedAnswerIndex(index);
@@ -69,12 +70,11 @@ function App() {
         setUserAnswers([]);
     };
 
-    // Render Results Screen
     if (quizState === "results") {
         return (
             <ResultsScreen
-                topic={toolOutput.topic}
-                difficulty={toolOutput.difficulty}
+                topic={topic}
+                difficulty={difficulty}
                 correctAnswersCount={correctAnswersCount}
                 totalQuestions={totalQuestions}
                 mistakesCount={mistakesCount}
@@ -83,11 +83,10 @@ function App() {
         );
     }
 
-    // Render Question or Feedback Screen
     return (
         <QuestionScreen
-            topic={toolOutput.topic}
-            difficulty={toolOutput.difficulty}
+            topic={topic}
+            difficulty={difficulty}
             currentQuestion={currentQuestion}
             currentQuestionIndex={currentQuestionIndex}
             totalQuestions={totalQuestions}
@@ -101,4 +100,4 @@ function App() {
     );
 }
 
-export default App;
+createRoot(document.getElementById("quizaurus-root")!).render(<App />);
