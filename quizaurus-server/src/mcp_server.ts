@@ -56,7 +56,14 @@ async function getInlineJs(filename: string) {
   return code.replace(/<\/script/g, "<\\/script");
 }
 
-const quizaurusJs = await getInlineJs('component.js')
+async function getInlineCss(filename: string) {
+  const jsPath = path.join("../quizaurus-web/dist", filename);
+  let styles = await fs.readFile(jsPath, "utf8");
+  return styles;
+}
+
+const quizaurusJs = await getInlineJs('QuizaurusApp.js')
+const quizaurusCss = await getInlineCss('QuizaurusApp.css')
 export const STATIC_DOMAIN = 'https://brenda-unharped-superoratorically.ngrok-free.dev'
 
 // UI resource (quiz runner)
@@ -71,7 +78,9 @@ mcpServer.registerResource(
         mimeType: "text/html+skybridge",
         text: `
 <div id="quizaurus-root"></div>
-<link rel="stylesheet" href="${STATIC_DOMAIN}/assets/quizaurus-2d2b.css">
+<style>
+${quizaurusCss}
+</style>
 <script type="module">
 ${quizaurusJs}
 </script>
