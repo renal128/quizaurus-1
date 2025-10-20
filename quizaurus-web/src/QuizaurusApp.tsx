@@ -28,7 +28,16 @@ function App() {
     const [userAnswers, setUserAnswers] = useState<number[]>([]);
 
     if (!toolOutput) {
-        return <div>Loading...</div>;
+        return (
+            <div className="quiz-container">
+                <div className="quiz-card quiz-card--loading">
+                    <div className="quiz-loading">
+                        <div className="quiz-loading__spinner"></div>
+                        <p className="quiz-loading__text">Generating your quiz...</p>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     const { questions, topic, difficulty } = toolOutput;
