@@ -11,8 +11,7 @@ interface QuestionScreenProps {
     quizState: QuizState;
     selectedAnswerIndex: number | null;
     isLastQuestion: boolean;
-    onSelectAnswer: (index: number) => void;
-    onSubmitAnswer: () => void;
+    onSubmitAnswer: (index: number) => void;
     onNextQuestion: () => void;
 }
 
@@ -25,7 +24,6 @@ export function QuestionScreen({
     quizState,
     selectedAnswerIndex,
     isLastQuestion,
-    onSelectAnswer,
     onSubmitAnswer,
     onNextQuestion,
 }: QuestionScreenProps) {
@@ -82,7 +80,7 @@ export function QuestionScreen({
                         <button
                             key={index}
                             className={getOptionClasses(index)}
-                            onClick={() => onSelectAnswer(index)}
+                            onClick={() => onSubmitAnswer(index)}
                             disabled={quizState === "feedback"}
                         >
                             <span className="quiz-option__letter">
@@ -101,19 +99,9 @@ export function QuestionScreen({
                     {currentQuestion.explanation}
                 </div>
 
-                {quizState === "question" ? (
-                    <button
-                        className="quiz-button"
-                        onClick={onSubmitAnswer}
-                        disabled={selectedAnswerIndex === null}
-                    >
-                        Submit Answer
-                    </button>
-                ) : (
-                    <button className="quiz-button" onClick={onNextQuestion}>
-                        {isLastQuestion ? "See Results" : "Next Question"}
-                    </button>
-                )}
+                <button className="quiz-button" onClick={onNextQuestion} style={{ visibility: quizState === "feedback" ? "visible" : "hidden" }}>
+                    {isLastQuestion ? "See Results" : "Next Question"}
+                </button>
             </div>
         </div>
     );

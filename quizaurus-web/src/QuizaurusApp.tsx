@@ -40,15 +40,10 @@ function App() {
     ).length;
     const mistakesCount = userAnswers.length - correctAnswersCount;
 
-    const handleSelectAnswer = (index: number) => {
+    const handleSubmitAnswer = (index: number) => {
         if (quizState === "question") {
             setSelectedAnswerIndex(index);
-        }
-    };
-
-    const handleSubmitAnswer = () => {
-        if (selectedAnswerIndex !== null) {
-            setUserAnswers([...userAnswers, selectedAnswerIndex]);
+            setUserAnswers([...userAnswers, index]);
             setQuizState("feedback");
         }
     };
@@ -93,7 +88,6 @@ function App() {
             quizState={quizState}
             selectedAnswerIndex={selectedAnswerIndex}
             isLastQuestion={isLastQuestion}
-            onSelectAnswer={handleSelectAnswer}
             onSubmitAnswer={handleSubmitAnswer}
             onNextQuestion={handleNextQuestion}
         />
