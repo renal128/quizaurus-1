@@ -30,7 +30,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --color-bg: #09090b;
-    --color-card: #18181b;
+    --color-card: #28282b;
     --color-border: #27272a;
     --color-text-primary: #fafafa;
     --color-text-secondary: #a1a1aa;
@@ -38,7 +38,7 @@
 
     --color-accent: #09090b;
     --color-accent-fg: #fafafa;
-    --color-accent-disabled: #fafafa;
+    --color-accent-disabled: #3a3a3a;
 
     --color-option-bg: #18181b;
     --color-option-border: #3f3f46;

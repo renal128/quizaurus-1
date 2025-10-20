@@ -99,7 +99,7 @@ export function QuestionScreen({
                     {currentQuestion.explanation}
                 </div>
 
-                <button className="quiz-button" onClick={onNextQuestion} style={{ visibility: quizState === "feedback" ? "visible" : "hidden" }}>
+                <button className="quiz-button" onClick={onNextQuestion} disabled={quizState === "question"}>
                     {isLastQuestion ? "See Results" : "Next Question"}
                 </button>
             </div>
