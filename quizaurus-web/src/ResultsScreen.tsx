@@ -8,6 +8,10 @@ interface ResultsScreenProps {
     totalQuestions: number;
     mistakesCount: number;
     onStartOver: () => void;
+    onReviewResults: () => void;
+    onMoreQuestions: () => void;
+    reviewClicked: boolean;
+    moreQuestionsClicked: boolean;
 }
 
 function getEncouragementMessage(percentage: number): string {
@@ -17,7 +21,7 @@ function getEncouragementMessage(percentage: number): string {
     return "Keep practicing!";
 }
 
-export function ResultsScreen({ topic, difficulty, correctAnswersCount, totalQuestions, mistakesCount, onStartOver }: ResultsScreenProps) {
+export function ResultsScreen({ topic, difficulty, correctAnswersCount, totalQuestions, mistakesCount, onStartOver, onReviewResults, onMoreQuestions, reviewClicked, moreQuestionsClicked }: ResultsScreenProps) {
     const scorePercentage = Math.round((correctAnswersCount / totalQuestions) * 100);
     const encouragement = getEncouragementMessage(scorePercentage);
 
@@ -81,10 +85,10 @@ export function ResultsScreen({ topic, difficulty, correctAnswersCount, totalQue
                         <button className="quiz-button" onClick={onStartOver}>
                             Start Over
                         </button>
-                        <button className="quiz-button quiz-button--secondary">
-                            Review
+                        <button className="quiz-button quiz-button--secondary" onClick={onReviewResults} disabled={reviewClicked}>
+                            Review Results
                         </button>
-                        <button className="quiz-button quiz-button--secondary">
+                        <button className="quiz-button quiz-button--secondary" onClick={onMoreQuestions} disabled={moreQuestionsClicked}>
                             More Questions
                         </button>
                     </div>

@@ -95,17 +95,16 @@ mcpServer.registerTool(
   {
     title: "Make an interactive quiz",
     description: `
-Create and render a multiple-choice quiz. If only "topic" is provided,
-first generate high-quality questions that match the schema in input/structuredContent:
-each item needs { question, options[], correctIndex, explanation }.
-Use 5–10 questions unless numQuestions is specified.
+Create and render a quiz. The tool expects to receive high-quality single-answer questions 
+that match the schema in input/structuredContent: each item needs 
+{ question, options[], correctIndex, explanation }.
+Use 5–10 questions unless the user requests a specific number of questions (make sure that it's under 50).
     `.trim(),
     _meta: {
       "openai/outputTemplate": "ui://widget/quiz-runner.html", // <- hook to the resource
     },
     inputSchema: {
       topic: z.string().describe("Quiz topic (e.g., 'US history')."),
-      numQuestions: z.number().int().min(1).max(20).default(8),
       difficulty: z.enum(["easy", "medium", "hard"]).default("medium"),
       questions: z.array(
         z.object({
@@ -119,7 +118,7 @@ Use 5–10 questions unless numQuestions is specified.
   },
   async (args) => {
     console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n${args}`);
-    const { topic, numQuestions = 8, difficulty = "medium", questions = [] } = args;
+    const { topic, difficulty = "medium", questions = [] } = args;
 
     // Trust but verify indexes
     const safeQuestions = (questions ?? []).filter((q: { question: any; options: string | any[]; correctIndex: number; }) =>

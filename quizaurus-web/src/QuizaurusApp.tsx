@@ -26,6 +26,8 @@ function App() {
     const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number | null>(null);
     const [quizState, setQuizState] = useState<QuizState>("question");
     const [userAnswers, setUserAnswers] = useState<number[]>([]);
+    const [reviewClicked, setReviewClicked] = useState(false);
+    const [moreQuestionsClicked, setMoreQuestionsClicked] = useState(false);
 
     if (!toolOutput) {
         return (
@@ -49,11 +51,16 @@ function App() {
     ).length;
     const mistakesCount = userAnswers.length - correctAnswersCount;
 
-    const handleSubmitAnswer = (index: number) => {
+    const handleSubmitAnswer = async (index: number) => {
         if (quizState === "question") {
             setSelectedAnswerIndex(index);
             setUserAnswers([...userAnswers, index]);
             setQuizState("feedback");
+
+            // Call setWidgetState
+            await window.openai.setWidgetState({
+                userAnswers: [...userAnswers, index]
+            });
         }
     };
 
@@ -72,6 +79,43 @@ function App() {
         setSelectedAnswerIndex(null);
         setQuizState("question");
         setUserAnswers([]);
+        setReviewClicked(false);
+        setMoreQuestionsClicked(false);
+    };
+
+    const handleReviewResults = async () => {
+        setReviewClicked(true);
+        
+        const results_json = []
+        for (let i = 0; i < questions.length; i++) {
+            const question = questions[i]
+            results_json.push({
+                question: question.question,
+                correctOption: question.options[question.correctIndex],
+                selectedOption: question.options[userAnswers[i]]
+            })
+        }
+        await window.openai.sendFollowUpMessage({
+            prompt: `
+                The user has completed a quiz. Below is a JSON object containing the sequence of questions. 
+                For each question is has the question itself, the correct answer and the user's answer.
+                Looking at that object, give the user feedback for each question. 
+                If the user's answer matches the correct answer, keep it minimalistic and concise.
+                If the user's answer doesn't match the correct answer, provide a short explanation, including
+                some information that helps understand and memorize the answer.
+        
+                Don't mention any technical details about response indices, toolOutput and widgetState in the response.
+                
+                ${JSON.stringify(results_json)}
+            `
+        });
+    };
+
+    const handleMoreQuestions = async () => {
+        setMoreQuestionsClicked(true);
+        await window.openai.sendFollowUpMessage({
+            prompt: "Generate another quiz with new questions on the same topic."
+        });
     };
 
     if (quizState === "results") {
@@ -83,6 +127,10 @@ function App() {
                 totalQuestions={totalQuestions}
                 mistakesCount={mistakesCount}
                 onStartOver={handleStartOver}
+                onReviewResults={handleReviewResults}
+                onMoreQuestions={handleMoreQuestions}
+                reviewClicked={reviewClicked}
+                moreQuestionsClicked={moreQuestionsClicked}
             />
         );
     }
