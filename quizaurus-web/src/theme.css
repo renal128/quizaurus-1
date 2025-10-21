@@ -16,6 +16,7 @@
   --color-option-selected-bg: #fafafa;
 
   --color-correct: #55DD33;
+  --color-correct-text: #008800;
   --color-correct-bg: #f0fdf4;
   --color-incorrect: #F88379;
   --color-incorrect-bg: #fef2f2;
@@ -45,6 +46,7 @@
     --color-option-selected-bg: #27272a;
 
     --color-correct: #22c55e;
+    --color-correct-text: #00dd00;
     --color-correct-bg: #14532d;
     --color-incorrect: #ef4444;
     --color-incorrect-bg: #7f1d1d;
@@ -159,7 +161,7 @@
   background-color: var(--color-option-bg);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 15px;
+  font-size: 16px;
   text-align: left;
   overflow: hidden;
 }
@@ -216,7 +218,7 @@
   border-radius: 12px;
   margin-bottom: 24px;
   line-height: 1.6;
-  font-size: 14px;
+  font-size: 16px;
   min-height: 22px;
   background-color: var(--color-option-bg);
   color: var(--color-text-secondary);
@@ -225,7 +227,7 @@
 
 .quiz-explanation--correct {
   background-color: var(--color-correct-bg);
-  color: var(--color-correct);
+  color: var(--color-correct-text);
   border-color: var(--color-correct);
 }
 
@@ -243,7 +245,7 @@
   color: var(--color-accent-fg);
   border: 1.5px solid transparent; /* instead of border: none */
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
